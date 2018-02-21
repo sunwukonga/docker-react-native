@@ -1,6 +1,6 @@
 # Disclaimer
 
-This is a fork from [gilesp's react_native](https://github.com/gilesp/docker/tree/master/react_native).
+This is a fork of [MaximeD,s docker-react-native](https://github.com/MaximeD/docker-react-native), which in turn was forked from [gilesp's react_native](https://github.com/gilesp/docker/tree/master/react_native).
 
 # Usage
 
@@ -8,7 +8,7 @@ This is a fork from [gilesp's react_native](https://github.com/gilesp/docker/tre
 
 Usual clone and image install:
 ```
-> git clone https://github.com/MaximeD/docker-react-native
+> git clone https://github.com/sunwukonga/docker-react-native.git
 > cd docker-react-native
 
 > docker build -t react-native .
@@ -18,32 +18,34 @@ Next you will need to have the two scripts available in your path. For example y
 ```
 export PATH="$HOME/docker-react-native:$PATH"
 ```
+Note: CaptainObviousTip --> don't forget to replace $Home with your actual home directory.
 
-## Create a new react native project
+## Clone BBBargains App
 
-Initialize repository.
+Within docker-react-native directory of host:
 ```
-> react-native.sh init MyAwesomeProjet
+git clone https://github.com/sunwukonga/BBBargainsApp.git
 ```
-(You can safey ignore errors from `npm`.)
 
+## Enter Docker Container
 
-Connect to container and install missing packages
+Connect to docker container and install missing packages
 ```
-> cd MyAwesomeProjet
+> cd BBBargainsApp
 > react-native-container.sh
+```
 
-dev> cd node_modules/react-native/
+Install node packages
+```
 dev> yarn
 ```
 
 ## Run project
 
-Inside container:
+Inside docker container (Android):
 ```
 dev> adb reverse tcp:8081 tcp:8081 # you'll need android > 5.1 for this
 dev> react-native start > react-start.log 2>&1 &
-dev> react-native android
 dev> react-native run-android
 ```
 
@@ -54,13 +56,15 @@ dev> watchman watch .
 ```
 
 
-To enable it on your phone,
-shake it, and select `Enable Hot Reloading`.
+To enable it on your phone, shake it, and select `Enable Hot Reloading`.
+
+I've never had to do the following, but it was in the origin instructions:
 You will also need to access `Dev Settings > Debug server host & port for device`
 and enter `localhost:8081`.
 
 # Install udev rules
 
+Again, I never had to do the following on my own system:
 On your host system, you'll need to install the android udev rules if you want to connect your phone or tablet via USB and deploy the react native app directly to it. You can get the rules from http://source.android.com/source/51-android.rules and you can install them as follows:
 
 ```

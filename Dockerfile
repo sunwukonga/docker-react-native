@@ -1,23 +1,30 @@
 # Docker image for react native.
 
-FROM node:4.1.1
+FROM node:6
 
-MAINTAINER Maxime Demolin <akbarova.armia@gmail.com>
+ENV maintainer="Paul Desmond Parker"
 
 
 # Setup environment variables
 ENV PATH $PATH:node_modules/.bin
 
+# Install add-apt-repository
+# RUN apt-get install -q software-properties-common python-software-properties
+RUN echo "deb http://http.debian.net/debian jessie-backports main" | \
+      tee --append /etc/apt/sources.list.d/jessie-backports.list > /dev/null
 
 # Install Java
+# RUN add-apt-repository ppa:openjdk-r/ppa -q && \
 RUN apt-get update -q && \
-	apt-get install -qy --no-install-recommends python-dev default-jdk
+    apt-get install -qy --no-install-recommends python-dev && \
+    apt-get install -qy --no-install-recommends -t jessie-backports openjdk-8-jdk
 
 
 # Install Android SDK
 
 ## Set correct environment variables.
-ENV ANDROID_SDK_FILE android-sdk_r24.4.1-linux.tgz
+ENV PKGVER 24.4.1
+ENV ANDROID_SDK_FILE android-sdk_r$PKGVER-linux.tgz
 ENV ANDROID_SDK_URL http://dl.google.com/android/$ANDROID_SDK_FILE
 
 ## Install 32bit support for Android SDK
@@ -52,7 +59,7 @@ RUN npm install -g react-native-cli@1.0.0
 ## Clean up when done
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    npm cache clear
+    npm cache clean
 
 
 # Install watchman
