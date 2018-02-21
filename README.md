@@ -38,13 +38,16 @@ Connect to docker container and install missing packages
 Install node packages
 ```
 dev> yarn
+dev> cd node_modules/react-native
+dev> yarn
 ```
 
 ## Run project
 
+### Setup routing to host, start log, run on android
 Inside docker container (Android):
 ```
-dev> adb reverse tcp:8081 tcp:8081 # you'll need android > 5.1 for this
+dev> adb reverse tcp:8081 tcp:8081
 dev> react-native start > react-start.log 2>&1 &
 dev> react-native run-android
 ```
@@ -56,15 +59,17 @@ dev> watchman watch .
 ```
 
 
-To enable it on your phone, shake it, and select `Enable Hot Reloading`.
+To enable it on your phone, shake it (or better yet type ./shake.sh in terminal), and select `Enable Hot Reloading`.
 
-I've never had to do the following, but it was in the origin instructions:
+*I've never had to do the following, but it was in the original instructions:*
+
 You will also need to access `Dev Settings > Debug server host & port for device`
 and enter `localhost:8081`.
 
 # Install udev rules
 
-Again, I never had to do the following on my own system:
+*Again, I never had to do the following on my own system:*
+
 On your host system, you'll need to install the android udev rules if you want to connect your phone or tablet via USB and deploy the react native app directly to it. You can get the rules from http://source.android.com/source/51-android.rules and you can install them as follows:
 
 ```
